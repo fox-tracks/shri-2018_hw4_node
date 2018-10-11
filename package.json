@@ -1,0 +1,16 @@
+{
+  "name": "shri-2018_hw4_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "Andryanova",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "moment": "^2.22.2",
+    "npm": "^6.4.1"
+  }
+}
