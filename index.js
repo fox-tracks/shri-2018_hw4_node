@@ -17,23 +17,23 @@ app.get('/status', (req, res) => {
     res.send(time);
 });
 
+
 app.get('/api/events', (req, res, next) => {
     const typeFromGet = req.query.type;
     console.log(typeFromGet);
+
+    let output = [];
+
     typeFromGet === undefined && res.send(events);
 
-    const newEvents = events.filter(event => {
+    const typesList = typeFromGet.split(':');
 
-        console.log('filter');
-
-        if (event.type === typeFromGet) {
-            return event;
-        }
+    typesList.forEach(typeItem => {
+        const newEvents = events.filter(event => event.type === typeItem);
+        output = output.concat(newEvents);
     });
 
-
-    res.send(newEvents);
-
+    res.send(output);
     // ДОБАВИТЬ ОБРАБОТКУ ОШИБОК
 });
 
