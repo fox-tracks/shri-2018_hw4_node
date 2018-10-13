@@ -4,6 +4,7 @@ const events = require('./events.json');
 const possibleTypes = ['info', 'critical'];
 const typeErrorMessage = 'incorrect type';
 const formatTime = require('./utils/formatTime');
+const sortEvents = require('./utils/sortEvents');
 
 const app = express();
 const startTime = Date.now();
@@ -42,16 +43,16 @@ app.get('/api/events', (req, res, next) => {
       });
     }
 
-
+  const sortedOutput = sortEvents(output);
   res.send(output);
 });
 
 
-app.use((req, res, next) => {     // логирование ошибки, пока просто console.log
+app.use((req, res, next) => {
     res.status(404).send('<h1>Page not found</h1>');
 });
 
-app.use((err, req, res, next) => {     // логирование ошибки, пока просто console.log
+app.use((err, req, res, next) => {
   console.log(err);
   if (err instanceof Error && err.message === typeErrorMessage) {
     res.status(400).send(err.message);
