@@ -1,5 +1,4 @@
 function sortEvents(events) {
-debugger;
 events.forEach(event => {
     const eventTime = event.time.split(',');
     const eventTimeSeparate = eventTime[0].split(':');
