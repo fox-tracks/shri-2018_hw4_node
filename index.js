@@ -7,11 +7,12 @@ const pageErrorMessage = 'incorrect page';
 const formatTime = require('./utils/formatTime');
 const sortEvents = require('./utils/sortEvents');
 const filterEvents = require('./utils/filterEvents');
+const processParams = require('./utils/processParams');
 
 const app = express();
 const startTime = Date.now();
 
-
+// корневой роут
 app.get('/', (req, res) => {
   res.send('It is Express app');
 });
@@ -26,23 +27,15 @@ app.get('/status', (req, res) => {
 
 app.get('/api/events', (req, res, next) => {
   const { type } = req.query;
-  let { page, quantity } = req.query;
 
   const filteredEvents = filterEvents(events, type, possibleTypes, typeErrorMessage);
-
   const sortedOutput = sortEvents(filteredEvents);
 
-  if (quantity === undefined) {
-    quantity = sortedOutput.length;
-  }
-
-  if(page === undefined) {
-    page = 1;
-  } else if (page > Math.ceil(sortedOutput.length / quantity)) {
-    throw new Error(pageErrorMessage);
-  }
+  const params = processParams(req.query, sortedOutput, pageErrorMessage);
+  const { page, quantity } = params;
 
   const eventsSet = sortedOutput.slice(((page - 1) * quantity), (page * quantity));
+
   const respond = {
     page: + page,
     from: Math.ceil(sortedOutput.length / quantity),
@@ -52,7 +45,7 @@ app.get('/api/events', (req, res, next) => {
   res.send(respond);
 });
 
-
+// обработка ошибок
 app.use((req, res, next) => {
   res.status(404).send('<h1>Page not found</h1>');
 });
