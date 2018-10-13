@@ -1,12 +1,14 @@
 const express = require('express');
 const port = 8000;
-const moment = require('moment');
 const events = require('./events.json');
 const possibleTypes = ['info', 'critical'];
 const typeErrorMessage = 'incorrect type';
+const formatTime = require('./utils/formatTime');
 
 const app = express();
 const startTime = Date.now();
+
+
 
 app.get('/', (req, res) => {
     res.send('It is Express app');
@@ -14,20 +16,18 @@ app.get('/', (req, res) => {
 
 // мидлвара зля запроса по роуту status - вычисление времени от момента запуска приложения
 app.get('/status', (req, res) => {
-    const seconds = Date.now() - startTime;
-    const time = moment(seconds).utc().format('HH:mm:ss');
-    res.send(time);
+  const time = formatTime(Date.now(), startTime);
+
+  res.send(time);
 });
 
 
 app.get('/api/events', (req, res, next) => {
     const typeFromGet = req.query.type;
-    console.log(typeFromGet);
-
     let output = [];
 
     if(typeFromGet === undefined) {
-      res.send(events);
+      output = events;
     } else {
       const typesList = typeFromGet.split(':');
 
@@ -40,10 +40,10 @@ app.get('/api/events', (req, res, next) => {
           throw new Error(typeErrorMessage);
         }
       });
-
-      res.send(output);
     }
-    // ДОБАВИТЬ ОБРАБОТКУ ОШИБОК
+
+
+  res.send(output);
 });
 
 
