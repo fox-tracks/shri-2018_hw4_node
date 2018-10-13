@@ -6,6 +6,7 @@ const typeErrorMessage = 'incorrect type';
 const pageErrorMessage = 'incorrect page';
 const formatTime = require('./utils/formatTime');
 const sortEvents = require('./utils/sortEvents');
+const filterEvents = require('./utils/filterEvents');
 
 const app = express();
 const startTime = Date.now();
@@ -26,24 +27,10 @@ app.get('/status', (req, res) => {
 app.get('/api/events', (req, res, next) => {
   const { type } = req.query;
   let { page, quantity } = req.query;
-  let output = [];
 
-  if (type === undefined) {
-    output = events;
-  } else {
-    const typesList = type.split(':');
+  const filteredEvents = filterEvents(events, type, possibleTypes, typeErrorMessage);
 
-    typesList.forEach(typeItem => {
-      if (possibleTypes.indexOf(typeItem) !== -1) {
-        const newEvents = events.filter(event => event.type === typeItem);
-        output = output.concat(newEvents);
-      } else {
-        throw new Error(typeErrorMessage);
-      }
-    });
-  }
-
-  const sortedOutput = sortEvents(output);
+  const sortedOutput = sortEvents(filteredEvents);
 
   if (quantity === undefined) {
     quantity = sortedOutput.length;
