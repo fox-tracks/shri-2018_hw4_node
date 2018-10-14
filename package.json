@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint \"**/*.js\"",
+    "test": "npm run eslint",
     "start": "nodemon index.js"
   },
   "author": "Andryanova",
@@ -13,6 +15,7 @@
     "npm": "^6.4.1"
   },
   "devDependencies": {
+    "eslint": "^5.7.0",
     "nodemon": "^1.18.4"
   }
 }
