@@ -4,14 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test",
     "start": "nodemon index.js"
   },
   "author": "Andryanova",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "moment": "^2.22.2",
     "npm": "^6.4.1"
   },
   "devDependencies": {
