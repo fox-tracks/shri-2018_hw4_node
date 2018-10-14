@@ -25,7 +25,7 @@ app.get('/status', (req, res) => {
 });
 
 
-app.get('/api/events', (req, res, next) => {
+app.get('/api/events', (req, res) => {
   const { type } = req.query;
 
   const filteredEvents = filterEvents(events, type, possibleTypes, typeErrorMessage);
@@ -42,7 +42,7 @@ app.get('/api/events', (req, res, next) => {
     quantityAtPage: quantity,
     events: eventsSet
   };
-  res.send(respond);
+  res.json(respond);
 });
 
 // обработка ошибок
