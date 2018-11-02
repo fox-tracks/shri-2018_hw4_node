@@ -19,4 +19,5 @@ function filterEvents(events, type, possibleTypes, errorMessage) {
     }
     return output;
 }
+exports.filterEvents = filterEvents;
 module.exports = filterEvents;

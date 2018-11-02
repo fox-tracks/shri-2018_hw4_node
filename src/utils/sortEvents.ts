@@ -6,13 +6,10 @@ export function sortEvents(events: HomeEvent[]) {
     const eventTimeSeparateStr: string[]  = eventTime[0].split(':');
     let eventTimeSeparate: number[];
 
-    function toNumber(strArray: string[]): number[] {
-        let newArray: number[] = [];
-        strArray.forEach(str => {
 
-        newArray.push[Number(str)];
-        return newArray;
-      })
+
+    function toNumber(strArray: string[]): number[] { 
+      return strArray.map(Number);
     }
 
     eventTimeSeparate = toNumber(eventTimeSeparateStr);
@@ -37,5 +34,6 @@ export function sortEvents(events: HomeEvent[]) {
 
 
   });
+
   return sortedEventsWithTimeMinutes;
 }

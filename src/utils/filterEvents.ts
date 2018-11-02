@@ -20,5 +20,3 @@ export function filterEvents(events: HomeEvent[], type: string | undefined, poss
 
   return output;
 }
-
-module.exports = filterEvents;
