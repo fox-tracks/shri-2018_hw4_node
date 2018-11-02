@@ -65,7 +65,7 @@ app.use((req: express.Request, res: express.Response, next: (error?: Error) => v
 });
 
 app.use((err: Error, req: express.Request, res: express.Response, next: (error?: Error) => void) => {
-  console.log(err);
+  console.error(err);
   if (err instanceof Error && (err.message === TYPE_ERROR_MESSAGE || err.message === PAGE_ERROR_MESSAGE)) {
     res.status(400).send(err.message);
   } else {
@@ -76,9 +76,9 @@ app.use((err: Error, req: express.Request, res: express.Response, next: (error?:
 app.listen(PORT, (err?: Error) => {
 
   if (err) {
-    return console.log('', err);
+    return console.error('', err);
   }
 
-  console.log(`Express app is listening on localhost: ${PORT}`);
+  console.info(`Express app is listening on localhost: ${PORT}`);
 });
 

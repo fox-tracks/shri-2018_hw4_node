@@ -1,12 +1,12 @@
 export enum EventType {
-    info = "info",
-    critical = "critical"
+    info = 'info',
+    critical = 'critical'
 }
 
 export enum SizeType {
-    s = "s",
-    m = "m",
-    l = "l"
+    s = 's',
+    m = 'm',
+    l = 'l'
 }
 
 export type HomeEventData = ChartData | EnviromentData | MusicData | DialogData | CameraData;

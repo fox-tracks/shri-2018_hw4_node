@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint \"**/*.js\"",
-    "test": "npm run eslint",
+    "tslint": "tslint \"./src/**/*.ts\"",
+    "test": "npm run tslint",
     "start": "node ./dist/index.js",
     "build": "tsc && cp ./events.json ./dist"
   },
@@ -19,6 +19,7 @@
     "@types/express": "^4.16.0",
     "eslint": "^5.7.0",
     "nodemon": "^1.18.4",
+    "tslint": "^5.11.0",
     "typescript": "^3.1.6"
   }
 }

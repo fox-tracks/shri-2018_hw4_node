@@ -1,6 +1,8 @@
 import { HomeEvent } from '../events';
 
-export function filterEvents(events: HomeEvent[], type: string | undefined, possibleTypes: string[], errorMessage: string) {
+export function filterEvents(
+    events: HomeEvent[], type: string | undefined, possibleTypes: string[], errorMessage: string
+) {
   let output: HomeEvent[] = [];
 
   if (type === undefined) {
