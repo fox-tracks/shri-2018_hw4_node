@@ -1,0 +1,85 @@
+const express = require('express');
+
+import { formatTime } from './utils/formatTime';
+import { sortEvents } from './utils/sortEvents';
+import { filterEvents } from './utils/filterEvents';
+import { processParams } from './utils/processParams';
+
+
+const fs = require('fs');
+const PORT: number = 8000;
+const POSSIBLE_TYPES: string[] = ['info', 'critical'];
+const TYPE_ERROR_MESSAGE: string = 'incorrect type';
+const PAGE_ERROR_MESSAGE: string= 'incorrect page';
+
+const app = express();
+const startTime = Date.now();
+
+// корневой роут
+app.get('/', (req, res) => {
+  res.send('It is Express app');
+});
+
+// мидлвара для запроса по роуту status - вычисление времени от момента запуска приложения
+app.get('/status', (req, res) => {
+  const time = formatTime(Date.now(), startTime);
+
+  res.send(time);
+});
+
+app.get('/api/events', (req, res) => {
+  const {type} = req.query;
+
+  fs.readFile('./events.ts', (evt, data) => {
+    if (evt) {
+      res.status(500).send('reading error');
+    } else {
+      try {
+        const events = JSON.parse(data);
+        const filteredEvents = filterEvents(events, type, POSSIBLE_TYPES, TYPE_ERROR_MESSAGE);
+        const sortedOutput = sortEvents(filteredEvents);
+
+        const params = processParams(req.query, sortedOutput, PAGE_ERROR_MESSAGE);
+        const {page, quantity} = params;
+
+        const eventsSet = sortedOutput.slice(((page - 1) * quantity), (page * quantity));
+
+        const respond = {
+          page: +page,
+          from: Math.ceil(sortedOutput.length / quantity),
+          quantityAtPage: quantity,
+          events: eventsSet
+        };
+        res.json(respond);
+      }
+      catch (err) {
+        res.status(500).send(err.message);
+      }
+    }
+  });
+
+});
+
+// обработка ошибок
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Page not found</h1>');
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  if (err instanceof Error && (err.message === TYPE_ERROR_MESSAGE || err.message === PAGE_ERROR_MESSAGE)) {
+    res.status(400).send(err.message);
+  } else {
+    res.status(500).send('<h1>Server error</h1>');
+  }
+});
+
+app.listen(PORT, (err) => {
+
+  if (err) {
+    return console.log('', err);
+  }
+
+  console.log(`Express app is listening on localhost: ${PORT}`);
+});
+

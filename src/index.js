@@ -27,12 +27,12 @@ app.get('/status', (req, res) => {
 app.get('/api/events', (req, res) => {
   const {type} = req.query;
 
-  fs.readFile('./events.json', (e, d) => {
-    if (e) {
+  fs.readFile('./events.json', (evt, data) => {
+    if (evt) {
       res.status(500).send('reading error');
     } else {
       try {
-        const events = JSON.parse(d);
+        const events = JSON.parse(data);
         const filteredEvents = filterEvents(events, type, POSSIBLE_TYPES, TYPE_ERROR_MESSAGE);
         const sortedOutput = sortEvents(filteredEvents);
 
